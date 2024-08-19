@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SendMessage;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
 
 class MessageController extends Controller
@@ -44,11 +46,13 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-       $message = new Message();
-       $message->from = 1;
-       $message->to = $request->to;
-       $message->context = htmlspecialchars($request->context, ENT_QUOTES, 'UTF-8');
-       $message->save();
+        $message = new Message();
+        $message->from = 1;
+        $message->to = 2;
+        $message->context = htmlspecialchars($request->context, ENT_QUOTES, 'UTF-8');
+        $message->save();
+
+        Event::dispatch(new SendMessage($message, $request->to));
     }
 
     /**

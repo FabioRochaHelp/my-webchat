@@ -15,8 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $userLogged = 1;
-        $user = User::where('id', '!=', $userLogged)->get();
+
+        // $userLogged = Auth::id();
+        // var_dump($userLogged);
+        $user = User::all();
         return response()->json(
             [
                 'users' => $user
